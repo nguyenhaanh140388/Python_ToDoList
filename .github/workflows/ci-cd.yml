@@ -3,7 +3,7 @@ name: CI/CD for Docker
 on:
   push:
     branches:
-      - main   # chỉ chạy khi push lên nhánh main
+      - master   # chỉ chạy khi push lên nhánh main
 
 jobs:
   build-and-push:
