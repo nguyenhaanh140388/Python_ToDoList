@@ -2,7 +2,7 @@ name: CI/CD for Docker
 
 on:
   push:
-    branches: [ "master" ]   # Đổi "master" thành "main" nếu repo mặc định là main
+    branches: [ "master" ]   # hoặc "master" nếu repo của bạn dùng master
 
 jobs:
   build:
@@ -20,5 +20,10 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # 3. Test login (giúp debug)
+      # 3. Verify Docker login
       - name: Verify Docker login
+        run: docker info
+
+      # 4. Build Docker image
+      - name: Build Docker image
+        run: docker build -t ${{ sec
