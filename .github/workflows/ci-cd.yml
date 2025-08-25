@@ -1,0 +1,30 @@
+name: CI/CD for Python_ToDoList
+
+on:
+  push:
+    branches: [ "main" ]   # chạy khi push vào branch main
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: docker build -t python_todolist .
+
+      - name: Tag Docker image
+        run: docker tag python_todolist your_dockerhub_username/python_todolist:latest
+
+      - name: Push Docker image
+        run: docker push your_dockerhub_username/python_todolist:latest
