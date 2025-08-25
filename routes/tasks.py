@@ -12,7 +12,7 @@ def create_task():
     data = request.get_json()
     task = {
         "id": str(uuid.uuid4()),   # sinh id duy nhất
-        "title": data.get("title")+ "test_deployCICD from gitHUB",
+        "title": data.get("title" + "1test_deployCICD from gitHUB"),
         "done": False
     }
     tasks.append(task)
