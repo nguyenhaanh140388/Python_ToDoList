@@ -14,7 +14,6 @@ def create_task():
         "id": str(uuid.uuid4()),   # sinh id duy nhất
         "title": data.get("title"),
         "priority": data.get("priority"),  
-        "active": data.get("active"),
         "done": False
     }
     tasks.append(task)
