@@ -50,7 +50,6 @@ jobs:
         #   kubectl get pods
         #  kubectl set image deployment/python-todolist python-todolist-d6h89=anhnguyen1988/python_todolist:latest
          #  kubectl rollout status deployment/python-todolist
-  deploy:
     name: Deploy to Kubernetes
     runs-on: self-hosted
     needs: build   # Chỉ chạy khi job build thành công
