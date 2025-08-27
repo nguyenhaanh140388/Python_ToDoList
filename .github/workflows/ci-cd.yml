@@ -27,7 +27,7 @@ jobs:
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/python_todolist:latest
         
-  deploy:
+  #deploy:
   #deploy to render.com
   #  needs: build
   #  runs-on: ubuntu-latest
@@ -35,16 +35,16 @@ jobs:
   #    - name: Trigger Render Deploy Hook
   #      run: |
   #        curl -X POST "${{ vars.RENDER_DEPLOY_HOOK }}"
-    runs-on: self-hosted   # chạy trên runner local
-    needs: build
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+   # runs-on: self-hosted   # chạy trên runner local
+   # needs: build
+   # steps:
+      #- name: Checkout repo
+     #   uses: actions/checkout@v3
         
-      - name: Configure kubectl
-        run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+    #  - name: Configure kubectl
+    #    run: echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
 
-      - name: Deploy to Kubernetes
-        run: |
-          kubectl set image deployment/python_todolist python_todolist=anhnguyen1988/python_todolist:latest --record
-          kubectl rollout status deployment/python_todolist
+     # - name: Deploy to Kubernetes
+    #    run: |
+      #    kubectl set image deployment/python_todolist python_todolist=anhnguyen1988/python_todolist:latest --record
+        #  kubectl rollout status deployment/python_todolist#
