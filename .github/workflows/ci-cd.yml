@@ -35,16 +35,18 @@ jobs:
   #    - name: Trigger Render Deploy Hook
   #      run: |
   #        curl -X POST "${{ vars.RENDER_DEPLOY_HOOK }}"
-    needs: build  # Chỉ chạy sau khi job build thành công
-    runs-on: [self-hosted, minikube]  # Chỉ chạy trên runner có label 'minikube'
-
+    name: Deploy to Minikube
+    needs: build
+    runs-on: [self-hosted, minikube]   # Chạy trên runner có label minikube
+    env:
+      KUBECONFIG: /home/actions/.kube/config   # Bắt buộc trỏ đúng kubeconfig
     steps:
-      - name: Checkout repository
+      - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Deploy to Minikube
-        env:
-          KUBECONFIG: /home/actions/.kube/config
+      - name: Deploy latest image
         run: |
+          kubectl get nodes
+          kubectl get pods
           kubectl set image deployment/python-todolist python-todolist-d6h89=anhnguyen1988/python_todolist:latest
           kubectl rollout status deployment/python-todolist
