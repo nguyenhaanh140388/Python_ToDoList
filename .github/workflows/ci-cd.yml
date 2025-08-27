@@ -61,7 +61,7 @@ jobs:
           mkdir -p ~/.kube
           cp /home/actions/.kube/config ~/.kube/config
           export KUBECONFIG=~/.kube/config
-          kubectl cluster-info
+        # kubectl cluster-info
 
       # 2. Deploy lên Kubernetes
       - name: Update deployment image
