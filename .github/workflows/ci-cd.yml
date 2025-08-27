@@ -58,8 +58,6 @@ jobs:
       # 1. Cấu hình kubeconfig
       - name: Set up kubeconfig
         run: |
-          mkdir -p ~/.kube
-          cp $HOME/.kube/config ~/.kube/config
           export KUBECONFIG=$HOME/.kube/config
           kubectl cluster-info
 
@@ -69,6 +67,9 @@ jobs:
           export KUBECONFIG=$HOME/.kube/config
           kubectl set image deployment/python-todolist python-todolist=anhnguyen1988/python_todolist:latest
           kubectl rollout status deployment/python-todolist
+      - name: Check Kubernetes nodes
+        run: |
+          export KUBECONFIG=$HOME/.kube/config
           kubectl get nodes
         #kubectl set image deployment/python-todolist python-todolist-d6h89=${{ secrets.DOCKERHUB_USERNAME }}/python_todolist:latest
         #kubectl rollout status deployment/python-todolist
