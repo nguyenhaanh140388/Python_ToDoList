@@ -35,18 +35,38 @@ jobs:
   #    - name: Trigger Render Deploy Hook
   #      run: |
   #        curl -X POST "${{ vars.RENDER_DEPLOY_HOOK }}"
-    name: Deploy to Minikube
-    needs: build
-    runs-on: [self-hosted, minikube]   # Chạy trên runner có label minikube
-    env:
-      KUBECONFIG: /home/actions/.kube/config   # Bắt buộc trỏ đúng kubeconfig
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
+  #   name: Deploy to Minikube
+  #   needs: build
+  #   runs-on: [self-hosted, minikube]   # Chạy trên runner có label minikube
+  #   env:
+ #      KUBECONFIG: /home/actions/.kube/config   # Bắt buộc trỏ đúng kubeconfig
+  #   steps:
+  #     - name: Checkout repo
+    #     uses: actions/checkout@v3
 
-      - name: Deploy latest image
+     #  - name: Deploy latest image
+     #    run: |
+       #    kubectl get nodes
+        #   kubectl get pods
+        #  kubectl set image deployment/python-todolist python-todolist-d6h89=anhnguyen1988/python_todolist:latest
+         #  kubectl rollout status deployment/python-todolist
+  deploy:
+    name: Deploy to Kubernetes
+    runs-on: self-hosted
+    needs: build   # Chỉ chạy khi job build thành công
+
+    steps:
+      # 1. Cấu hình kubeconfig
+      - name: Setup kubeconfig
         run: |
-          kubectl get nodes
-          kubectl get pods
-          kubectl set image deployment/python-todolist python-todolist-d6h89=anhnguyen1988/python_todolist:latest
+          mkdir -p ~/.kube
+          cp /home/actions/.kube/config ~/.kube/config
+          export KUBECONFIG=~/.kube/config
+          kubectl cluster-info
+
+      # 2. Deploy lên Kubernetes
+      - name: Update deployment image
+        run: |
+          export KUBECONFIG=~/.kube/config
+          kubectl set image deployment/python-todolist python-todolist-d6h89=${{ secrets.DOCKERHUB_USERNAME }}/python_todolist:latest
           kubectl rollout status deployment/python-todolist
